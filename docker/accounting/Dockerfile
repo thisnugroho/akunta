@@ -24,7 +24,7 @@ RUN COMPOSER_NO_SECURITY_BLOCKING=1 composer install --no-dev --prefer-dist --no
     && cp -aL /app/apps/accounting /application
 
 
-FROM php:8.3-fpm-alpine AS runtime
+FROM php:8.4-fpm-alpine AS runtime
 
 RUN apk add --no-cache \
         curl \
