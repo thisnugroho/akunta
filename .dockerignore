@@ -1,0 +1,20 @@
+.git
+.github
+.agents
+.claude
+.codex
+.env
+.env.*
+!.env.example
+**/vendor
+**/node_modules
+**/.phpunit.cache
+**/storage/logs
+**/storage/framework/cache
+**/storage/framework/sessions
+**/storage/framework/views
+**/bootstrap/cache
+docker/postgres/data
+docker/redis/data
+ui design
+
