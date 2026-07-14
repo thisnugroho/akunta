@@ -18,8 +18,9 @@ COPY apps/accounting/ ./apps/accounting/
 
 WORKDIR /app/apps/accounting
 RUN mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
-# Temporary: remove once the Laravel dependency advisory is remediated and locked.
-RUN COMPOSER_NO_SECURITY_BLOCKING=1 composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader \
+# Package discovery boots the app and requires its runtime database configuration.
+# Temporary: remove the security bypass once the Laravel advisory is remediated and locked.
+RUN COMPOSER_NO_SECURITY_BLOCKING=1 composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts --optimize-autoloader \
     && cp -aL /app/apps/accounting /application
 
 
