@@ -1,7 +1,8 @@
 # Accounting production stack
 
-This Compose file deploys the Accounting app from GHCR, together with Nginx,
-PostgreSQL, Redis, a queue worker, and Laravel scheduler.
+This Compose file deploys one Accounting image from GHCR. The image contains
+Nginx and PHP-FPM; the same image also runs the queue worker and Laravel
+scheduler with command overrides. PostgreSQL and Redis remain separate.
 
 1. Copy `.env.production.example` to `.env.production` and replace every
    `CHANGE_ME` value. Generate `APP_KEY` with

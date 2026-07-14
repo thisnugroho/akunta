@@ -11,17 +11,8 @@ permissions:
 
 jobs:
   build:
-    name: Build and publish ${{ matrix.name }} image
+    name: Build and publish Accounting image
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - name: Accounting PHP-FPM
-            target: php-fpm
-            image: akunta-accounting
-          - name: Accounting Nginx
-            target: nginx
-            image: akunta-accounting-nginx
 
     steps:
       - name: Check out repository
@@ -42,13 +33,13 @@ jobs:
         with:
           context: .
           file: ./docker/accounting/Dockerfile
-          target: ${{ matrix.target }}
+          target: runtime
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:production
+            ghcr.io/${{ github.repository_owner }}/akunta-accounting:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/akunta-accounting:production
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
-          cache-from: type=gha,scope=${{ matrix.target }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.target }}
+          cache-from: type=gha,scope=accounting
+          cache-to: type=gha,mode=max,scope=accounting
