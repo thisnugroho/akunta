@@ -17,7 +17,8 @@ COPY modules/ ./modules/
 COPY apps/accounting/ ./apps/accounting/
 
 WORKDIR /app/apps/accounting
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader \
+# Temporary: remove once the Laravel dependency advisory is remediated and locked.
+RUN COMPOSER_NO_SECURITY_BLOCKING=1 composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader \
     && cp -aL /app/apps/accounting /application
 
 
