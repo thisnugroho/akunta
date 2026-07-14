@@ -4,8 +4,10 @@ services:
   accounting:
     image: ghcr.io/${GHCR_OWNER:-thisnugroho}/akunta-accounting:${IMAGE_TAG:-production}
     pull_policy: always
-    ports:
-      - "${HTTP_PORT:-80}:80"
+    # Dokploy/Traefik reaches this internal port through the configured Domain.
+    # Do not bind host port 80; Traefik already owns it.
+    expose:
+      - "80"
     env_file:
       - .env
     environment:
@@ -20,7 +22,7 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
+        condition: service_started
     restart: unless-stopped
     networks:
       - frontend
@@ -45,7 +47,7 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
+        condition: service_started
     restart: unless-stopped
     networks:
       - backend
@@ -69,7 +71,7 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
+        condition: service_started
     restart: unless-stopped
     networks:
       - backend
@@ -117,6 +119,8 @@ services:
   redis:
     image: redis:7-alpine
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:?set REDIS_PASSWORD in .env}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?set REDIS_PASSWORD in .env}
     volumes:
       - redis-data:/data
     restart: unless-stopped

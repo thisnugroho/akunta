@@ -8,14 +8,17 @@ scheduler with command overrides. PostgreSQL and Redis remain separate.
    service's **Environment** tab. Dokploy writes them to its local `.env`
    file automatically. Replace every `CHANGE_ME` value. Generate `APP_KEY` with
    `php artisan key:generate --show` from `apps/accounting`.
-2. Authenticate the server to GHCR if the package remains private:
+2. Add the application domain in Dokploy's **Domains** tab with **Container
+   Port** `80`. Do not add a host port mapping: Dokploy's Traefik owns ports
+   `80` and `443` and routes traffic internally to the accounting container.
+3. Authenticate the server to GHCR if the package remains private:
    `docker login ghcr.io -u thisnugroho`.
-3. For a manual Docker Compose deployment, copy `.env.example` to
+4. For a manual Docker Compose deployment, copy `.env.example` to
    `docker/.env`, then pull and start the stack:
    `docker compose -f docker/docker-compose.production.yml pull`
    then `docker compose -f docker/docker-compose.production.yml up -d`.
-4. Run the migration once per release:
+5. Run the migration once per release:
    `docker compose -f docker/docker-compose.production.yml --profile tools run --rm migrate`.
 
-PostgreSQL and Redis are intentionally private to the Compose network. Only
-Nginx exposes a host port.
+PostgreSQL and Redis are intentionally private to the Compose network. Nginx
+is reachable only through Dokploy's Traefik routing.
