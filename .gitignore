@@ -21,5 +21,6 @@ composer.lock
 .env
 .env.*
 !.env.example
+!.env.production.example
 docker/postgres/data/
 docker/redis/data/
