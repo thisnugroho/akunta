@@ -29,6 +29,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
     networks:
       - frontend
@@ -60,6 +62,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
     networks:
       - backend
@@ -90,6 +94,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
     networks:
       - backend
@@ -118,8 +124,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    profiles:
-      - tools
+      redis:
+        condition: service_started
+    restart: "no"
     networks:
       - backend
 

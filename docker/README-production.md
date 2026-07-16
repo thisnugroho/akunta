@@ -17,8 +17,9 @@ scheduler with command overrides. PostgreSQL and Redis remain separate.
    `docker/.env`, then pull and start the stack:
    `docker compose -f docker/docker-compose.production.yml pull`
    then `docker compose -f docker/docker-compose.production.yml up -d`.
-5. Run the migration once per release:
-   `docker compose -f docker/docker-compose.production.yml --profile tools run --rm migrate`.
+5. Database migrations run automatically on each deployment. The web, queue,
+   and scheduler services wait until `php artisan migrate --force` completes
+   successfully.
 
 PostgreSQL and Redis are intentionally private to the Compose network. Nginx
 is reachable only through Dokploy's Traefik routing.
