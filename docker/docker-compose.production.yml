@@ -35,7 +35,6 @@ services:
     networks:
       - frontend
       - backend
-      - dokploy-network
 
   queue:
     image: ghcr.io/${GHCR_OWNER:-thisnugroho}/akunta-accounting:${IMAGE_TAG:-production}
@@ -168,8 +167,6 @@ networks:
   frontend:
   backend:
     internal: true
-  dokploy-network:
-    external: true
 
 volumes:
   postgres-data:
