@@ -23,11 +23,18 @@ return new class extends Migration
             $table->string('nib', 32)->nullable();
             $table->string('sk_no', 64)->nullable();
             $table->json('address')->nullable();
-            $table->foreignUlid('parent_entity_id')->nullable()->constrained('entities')->nullOnDelete();
+            $table->ulid('parent_entity_id')->nullable();
             $table->string('relation_type', 32)->default('independent');
             $table->timestampsTz();
 
             $table->index('tenant_id');
+        });
+
+        Schema::table('entities', function (Blueprint $table) {
+            $table->foreign('parent_entity_id')
+                ->references('id')
+                ->on('entities')
+                ->nullOnDelete();
         });
     }
 
