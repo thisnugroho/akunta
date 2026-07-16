@@ -18,10 +18,16 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('entity_id')->references('id')->on('entities')->cascadeOnDelete();
-            $table->foreign('parent_id')->references('id')->on('cost_centers')->nullOnDelete();
 
             $table->unique(['entity_id', 'code']);
             $table->index(['entity_id', 'is_active']);
+        });
+
+        Schema::table('cost_centers', function (Blueprint $table) {
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('cost_centers')
+                ->nullOnDelete();
         });
     }
 

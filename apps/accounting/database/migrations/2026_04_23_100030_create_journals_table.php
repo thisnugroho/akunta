@@ -31,13 +31,19 @@ return new class extends Migration
             $table->foreign('period_id')->references('id')->on('periods')->cascadeOnDelete();
             $table->foreign('posted_by')->references('id')->on('users')->nullOnDelete();
             $table->foreign('created_by')->references('id')->on('users')->nullOnDelete();
-            $table->foreign('reversed_by_journal_id')->references('id')->on('journals')->nullOnDelete();
 
             $table->unique('idempotency_key');
             $table->unique(['entity_id', 'period_id', 'number']);
             $table->index(['entity_id', 'period_id', 'date']);
             $table->index(['entity_id', 'status']);
             $table->index(['source_app', 'source_id']);
+        });
+
+        Schema::table('journals', function (Blueprint $table) {
+            $table->foreign('reversed_by_journal_id')
+                ->references('id')
+                ->on('journals')
+                ->nullOnDelete();
         });
     }
 

@@ -21,11 +21,18 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->foreignUlid('parent_role_id')->nullable()->constrained('roles')->nullOnDelete();
+            $table->ulid('parent_role_id')->nullable();
             $table->boolean('is_preset')->default(false);
             $table->timestampsTz();
 
             $table->unique(['tenant_id', 'code']);
+        });
+
+        Schema::table('roles', function (Blueprint $table) {
+            $table->foreign('parent_role_id')
+                ->references('id')
+                ->on('roles')
+                ->nullOnDelete();
         });
     }
 

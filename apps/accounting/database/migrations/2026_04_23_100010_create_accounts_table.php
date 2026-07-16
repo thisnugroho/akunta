@@ -21,11 +21,17 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('entity_id')->references('id')->on('entities')->cascadeOnDelete();
-            $table->foreign('parent_account_id')->references('id')->on('accounts')->nullOnDelete();
 
             $table->unique(['entity_id', 'code']);
             $table->index(['entity_id', 'type']);
             $table->index(['entity_id', 'parent_account_id']);
+        });
+
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->foreign('parent_account_id')
+                ->references('id')
+                ->on('accounts')
+                ->nullOnDelete();
         });
     }
 
