@@ -61,8 +61,15 @@ COPY --from=frontend --chown=www-data:www-data /app/apps/accounting/public/build
 COPY docker/accounting/nginx.conf /etc/nginx/nginx.conf
 COPY docker/accounting/supervisord.conf /etc/supervisord.conf
 
-RUN chmod -R ug=rw storage bootstrap/cache \
-    && mkdir -p /run/nginx
+RUN mkdir -p \
+        bootstrap/cache \
+        storage/framework/cache \
+        storage/framework/sessions \
+        storage/framework/views \
+        storage/logs \
+        /run/nginx \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R ug=rwX storage bootstrap/cache
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD wget -q -O /dev/null http://localhost/up || exit 1
