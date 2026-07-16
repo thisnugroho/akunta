@@ -22,4 +22,5 @@ scheduler with command overrides. PostgreSQL and Redis remain separate.
    successfully.
 
 PostgreSQL and Redis are intentionally private to the Compose network. Nginx
-is reachable only through Dokploy's Traefik routing.
+is reachable only through Dokploy's Traefik routing. The accounting service is
+attached to Dokploy's external `dokploy-network` so Traefik can reach port 80.
